@@ -8,3 +8,10 @@ export const getCover = (resources: Resource[]) => {
 export const getAuthor = (agents: Agent[]) => {
   return agents.find((agent) => agent.type === 'Author')?.person;
 };
+
+export const findBookUri = (resources: Resource[]) => {
+  return (
+    resources.find(({ uri }) => uri.includes('.htm')) ||
+    resources.find(({ uri }) => uri.includes('.txt'))
+  )?.uri;
+};

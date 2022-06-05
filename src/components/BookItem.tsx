@@ -1,4 +1,4 @@
-import { SmallAddIcon } from '@chakra-ui/icons';
+import { MinusIcon } from '@chakra-ui/icons';
 import {
   Box,
   Image,
@@ -6,8 +6,10 @@ import {
   Heading,
   Text,
   Button,
+  Link as ChakraLink,
   ButtonGroup,
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { Book } from '../types';
 import { getAuthor, getCover } from '../utils/helpers';
 import { BookFeature } from './BookFeature';
@@ -17,18 +19,22 @@ interface Props {
 }
 
 export const BookItem = ({ book }: Props) => {
-  const { title, resources, agents, languages } = book;
+  const { id, title, resources, agents, languages } = book;
   const coverUrl = getCover(resources);
   const author = getAuthor(agents);
 
   return (
     <Flex w='xs' bg='white' shadow='md' rounded='lg'>
       {coverUrl && (
-        <Image h={40} src={coverUrl} alt={`cover of ${title}`} rounded='md' />
+        <ChakraLink to={`/book/${id}`} as={Link}>
+          <Image h={40} src={coverUrl} alt={`cover of ${title}`} rounded='md' />
+        </ChakraLink>
       )}
       <Flex w={coverUrl ? 2 / 3 : 'full'} p={3} direction='column'>
         <Heading as='h2' size='sm' w='full' noOfLines={3}>
-          {title}
+          <ChakraLink to={`/book/${id}`} as={Link}>
+            {title}
+          </ChakraLink>
         </Heading>
         <Text fontSize='xs'>{author}</Text>
         <Box fontSize='xs'>
@@ -41,13 +47,10 @@ export const BookItem = ({ book }: Props) => {
           grow='1'
           size='xs'
           variant='outline'
+          mt={4}
         >
-          <Button
-            colorScheme='teal'
-            leftIcon={<SmallAddIcon />}
-            onClick={() => {}}
-          >
-            add to favorite
+          <Button colorScheme='red' leftIcon={<MinusIcon />} onClick={() => {}}>
+            remove from favorite
           </Button>
         </ButtonGroup>
       </Flex>

@@ -1,6 +1,9 @@
 export const API_URL = 'https://gnikdroy.pythonanywhere.com/api/book';
 export const DEBOUNCE_TIMEOUT = 900;
-
+export const NAV_ITEMS = [
+  { to: '/', label: 'Search book' },
+  { to: '/favorite', label: 'Favorite books' },
+];
 export const BOOKS_PER_PAGE = 10;
 export const LANGUAGES = [
   'zh',
