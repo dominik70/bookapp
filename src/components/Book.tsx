@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { AddIcon, ViewIcon } from '@chakra-ui/icons';
+import { AddIcon, MinusIcon, ViewIcon } from '@chakra-ui/icons';
 import { useFetch } from '../hooks/useFetch';
 import { Book as BookType } from '../types';
 import { getAuthor, getCover } from '../utils/helpers';
@@ -19,6 +19,7 @@ import { API_URL } from '../utils/constants';
 import { BookFeature } from './BookFeature';
 import { BookModal } from './BookModal';
 import { NotFound } from './NotFound';
+import { useFavoriteBooks } from '../contexts/FavoriteBooksContext';
 
 export const Book = () => {
   const { bookId } = useParams();
@@ -27,6 +28,9 @@ export const Book = () => {
     isLoading,
     error,
   } = useFetch<BookType>(`${API_URL}/${bookId}`);
+  const { favoriteBooks, addFavoriteBook, removeFavoriteBook } =
+    useFavoriteBooks();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (isLoading) {
@@ -50,6 +54,7 @@ export const Book = () => {
   }
 
   const {
+    id,
     title,
     resources,
     bookshelves,
@@ -92,9 +97,24 @@ export const Book = () => {
           colorScheme='teal'
           variant='outline'
         >
-          <Button leftIcon={<AddIcon />} onClick={() => {}} bg='white'>
-            add to favorite
-          </Button>
+          {!favoriteBooks.find((book) => book.id === id) ? (
+            <Button
+              leftIcon={<AddIcon />}
+              onClick={() => addFavoriteBook(book)}
+              bg='white'
+            >
+              add to favorite
+            </Button>
+          ) : (
+            <Button
+              colorScheme='red'
+              leftIcon={<MinusIcon />}
+              onClick={() => removeFavoriteBook(id)}
+              bg='white'
+            >
+              remove from favorite
+            </Button>
+          )}
           <Button leftIcon={<ViewIcon />} onClick={onOpen} bg='white'>
             read book
           </Button>

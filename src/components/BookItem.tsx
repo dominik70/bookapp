@@ -1,4 +1,4 @@
-import { MinusIcon } from '@chakra-ui/icons';
+import { MinusIcon, SmallAddIcon } from '@chakra-ui/icons';
 import {
   Box,
   Image,
@@ -10,6 +10,7 @@ import {
   ButtonGroup,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useFavoriteBooks } from '../contexts/FavoriteBooksContext';
 import { Book } from '../types';
 import { getAuthor, getCover } from '../utils/helpers';
 import { BookFeature } from './BookFeature';
@@ -22,6 +23,8 @@ export const BookItem = ({ book }: Props) => {
   const { id, title, resources, agents, languages } = book;
   const coverUrl = getCover(resources);
   const author = getAuthor(agents);
+  const { favoriteBooks, addFavoriteBook, removeFavoriteBook } =
+    useFavoriteBooks();
 
   return (
     <Flex w='xs' bg='white' shadow='md' rounded='lg'>
@@ -47,11 +50,25 @@ export const BookItem = ({ book }: Props) => {
           grow='1'
           size='xs'
           variant='outline'
-          mt={4}
+          mt={2}
         >
-          <Button colorScheme='red' leftIcon={<MinusIcon />} onClick={() => {}}>
-            remove from favorite
-          </Button>
+          {!favoriteBooks.find((book) => book.id === id) ? (
+            <Button
+              colorScheme='teal'
+              leftIcon={<SmallAddIcon />}
+              onClick={() => addFavoriteBook(book)}
+            >
+              add to favorite
+            </Button>
+          ) : (
+            <Button
+              colorScheme='red'
+              leftIcon={<MinusIcon />}
+              onClick={() => removeFavoriteBook(id)}
+            >
+              remove from favorite
+            </Button>
+          )}
         </ButtonGroup>
       </Flex>
     </Flex>

@@ -63,7 +63,6 @@ export const SearchForm = ({ filters, handleFilterChange, refetch }: Props) => {
             placeholder='Select language'
             bg='white'
             id='language'
-            defaultValue='en'
             onChange={handleFilterChange}
           >
             {LANGUAGES.map((language) => (
